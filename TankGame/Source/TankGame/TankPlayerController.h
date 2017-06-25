@@ -17,8 +17,12 @@ class TANKGAME_API ATankPlayerController : public APlayerController
 	
 public: 
 
+	void BeginPlay() override;
+	void Tick(float DeltaTime) override;
+
+private:
+
 	ATank* GetControlledTank() const;
-	void BeginPlay() override; //Using inheritance from AActor class.
-	
+	void AimTowardsCrosshair();
 	
 };
