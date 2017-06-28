@@ -27,7 +27,18 @@ void ATankPlayerController::AimTowardsCrosshair()
 {
 	if ( !GetControlledTank() ) { return; }
 
-	//TODO this function should make the cannon move towards the crosshair and shoot if input is received
+	FVector HitLocation;
+	if (GetSightRayHitLocation(HitLocation))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Hit Location: %s"), *(HitLocation.ToString() ) )
+		//TODO make controlled tank to aim at the point.
+	}
+}
+
+bool ATankPlayerController::GetSightRayHitLocation(FVector &HitLocation) const
+{
+	HitLocation = FVector(1.f); //TODO make this the actual HitLocation value.
+	return true;
 }
 
 

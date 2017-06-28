@@ -24,5 +24,6 @@ private:
 
 	ATank* GetControlledTank() const;
 	void AimTowardsCrosshair();
+	bool GetSightRayHitLocation(FVector &) const; //Gets world location of the point where the line trace hits the world, returns true if hits, false otherwise.
 	
 };
