@@ -19,6 +19,7 @@ class TANKGAME_API ATankAIController : public AAIController
 
 public:
 
+	void Tick(float DeltaTime) override;
 	void BeginPlay() override;
 
 private:

@@ -27,11 +27,12 @@ void ATankPlayerController::AimTowardsCrosshair()
 {
 	if ( !GetControlledTank() ) { return; }
 
-	FVector HitLocation;
+	FVector HitLocation; //Out param
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Hit Location: %s"), *(HitLocation.ToString()))
-		//TODO make controlled tank to aim at the point.
+
+		GetControlledTank()->AimAt(HitLocation);
+
 	}
 }
 
@@ -48,10 +49,9 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector &HitLocation) const
 	FVector WorldDirection; //OUT param
 	if (GetLookDirection(ScreenLocation, WorldDirection))
 		GetLookVectorHitLocation(WorldDirection, HitLocation);
-			
-
-	return true;
 	
+	
+	return true;
 }
 
 bool ATankPlayerController::GetLookVectorHitLocation(FVector WorldDirection, FVector &HitLocation) const
@@ -59,9 +59,8 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector WorldDirection, FVe
 	FHitResult HitResult;
 	FVector Start = PlayerCameraManager->GetCameraLocation();
 	FVector End = Start + WorldDirection*LineTraceReach;
-	FCollisionQueryParams CollisionQueryParams = FCollisionQueryParams("Name", false, this);
-	
-	bool ForReturn = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, CollisionQueryParams);
+
+	bool ForReturn = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility);
 	HitLocation = HitResult.Location; //Getting the OUT param before returning bool
 	return ForReturn;
 		
