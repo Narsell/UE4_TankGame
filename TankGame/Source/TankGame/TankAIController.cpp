@@ -7,12 +7,7 @@ void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto PlayerTank = GetPlayerTank();
 
-	if (PlayerTank)
-		UE_LOG(LogTemp, Warning, TEXT("Tank AI Controller aiming at %s"), *(PlayerTank->GetName()))
-	else
-		UE_LOG(LogTemp, Warning, TEXT("Tank AI Controller not aiming"))
 
 }
 
@@ -20,7 +15,7 @@ void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (!GetPlayerTank) { return; }
+	if (!GetPlayerTank() ) { return; }
 	FVector HitLocation = GetPlayerTank()->GetActorLocation();
 	GetControlledAITank()->AimAt(HitLocation);
 
