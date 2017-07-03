@@ -47,9 +47,14 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector &HitLocation) const
 	//Project the crosshair into a world direction.
 
 	FVector WorldDirection; //OUT param
-	if (GetLookDirection(ScreenLocation, WorldDirection))
-		GetLookVectorHitLocation(WorldDirection, HitLocation);
-	
+	if (GetLookDirection(ScreenLocation, WorldDirection)) //Not failing
+	{
+		if (!GetLookVectorHitLocation(WorldDirection, HitLocation))
+			UE_LOG(LogTemp, Warning, TEXT("failed TankPlayerController.cpp line 52"))
+	}
+
+
+
 	
 	return true;
 }
@@ -60,16 +65,29 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector WorldDirection, FVe
 	FVector Start = PlayerCameraManager->GetCameraLocation();
 	FVector End = Start + WorldDirection*LineTraceReach;
 
-	bool ForReturn = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility);
-	HitLocation = HitResult.Location; //Getting the OUT param before returning bool
-	return ForReturn;
+	if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility)) //Not failing when it shouldn't
+	{
+		HitLocation = HitResult.Location; //Getting the OUT param before returning bool
+		return true;
+	}
+	
+	return false;
 		
 }
 
 bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector &WorldDirection) const
 {
 	FVector CameraLocation;
-	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraLocation, WorldDirection);	
+	if (DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraLocation, WorldDirection)) //Not failing
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("success TankPlayerController.cpp line 79"))
+			return true;
+	}
+	else
+	{
+	//	UE_LOG(LogTemp, Warning, TEXT("failed TankPlayerController.cpp line 79"))
+		return false;
+	}
 }
 
 

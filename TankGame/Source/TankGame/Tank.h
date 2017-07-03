@@ -15,7 +15,11 @@ class TANKGAME_API ATank : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ATank();
-	void AimAt(FVector HitLocation);
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
 
 protected:
 	// Called when the game starts or when spawned
@@ -24,14 +28,15 @@ protected:
 	UTankAimingComponent * TankAimingComponent = nullptr;
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
+	void AimAt(FVector HitLocation);
+
+private:
+	UPROPERTY(EditAnywhere, Category = Firing)
+		float LaunchSpeed = 150000.f; 
+	
 
 	
 	
