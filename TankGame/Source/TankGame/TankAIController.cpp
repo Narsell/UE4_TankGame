@@ -15,11 +15,8 @@ void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (!GetPlayerTank() ) 
-	{ 
-		UE_LOG(LogTemp, Warning, TEXT("failed TankAIController.cpp line 18"))
-		return; 
-	}
+	if (!GetPlayerTank() ) 	{ return; }
+
 	FVector HitLocation = GetPlayerTank()->GetActorLocation();
 	GetControlledAITank()->AimAt(HitLocation);
 
@@ -37,11 +34,8 @@ ATank* ATankAIController::GetPlayerTank() const
 	
 	auto PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
 
-	if (!PlayerPawn)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("failed TankPlayerController.cpp line 40"))
-		return nullptr;
-	}
+	if (!PlayerPawn) { return nullptr; }
+
 	else
 		return Cast<ATank>(PlayerPawn);
 }

@@ -30,9 +30,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	FVector HitLocation; //Out param
 	if (GetSightRayHitLocation(HitLocation))
 	{
-
 		GetControlledTank()->AimAt(HitLocation);
-
 	}
 }
 
@@ -47,16 +45,13 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector &HitLocation) const
 	//Project the crosshair into a world direction.
 
 	FVector WorldDirection; //OUT param
-	if (GetLookDirection(ScreenLocation, WorldDirection)) //Not failing
+	if (GetLookDirection(ScreenLocation, WorldDirection)) 
 	{
 		if (!GetLookVectorHitLocation(WorldDirection, HitLocation))
-			UE_LOG(LogTemp, Warning, TEXT("failed TankPlayerController.cpp line 52"))
+			UE_LOG(LogTemp, Warning, TEXT("Failed TankPlayerController.cpp line 50")) //Means no ECC_Visibility channel objects intersected.
 	}
 
-
-
-	
-	return true;
+	return true; //TODO check a better way to deal with this return.
 }
 
 bool ATankPlayerController::GetLookVectorHitLocation(FVector WorldDirection, FVector &HitLocation) const
@@ -65,9 +60,9 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector WorldDirection, FVe
 	FVector Start = PlayerCameraManager->GetCameraLocation();
 	FVector End = Start + WorldDirection*LineTraceReach;
 
-	if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility)) //Not failing when it shouldn't
+	if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility)) 
 	{
-		HitLocation = HitResult.Location; //Getting the OUT param before returning bool
+		HitLocation = HitResult.Location; //Setting the OUT param
 		return true;
 	}
 	
@@ -78,16 +73,8 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector WorldDirection, FVe
 bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector &WorldDirection) const
 {
 	FVector CameraLocation;
-	if (DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraLocation, WorldDirection)) //Not failing
-	{
-		//UE_LOG(LogTemp, Warning, TEXT("success TankPlayerController.cpp line 79"))
-			return true;
-	}
-	else
-	{
-	//	UE_LOG(LogTemp, Warning, TEXT("failed TankPlayerController.cpp line 79"))
-		return false;
-	}
+	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraLocation, WorldDirection); 
+	
 }
 
 
