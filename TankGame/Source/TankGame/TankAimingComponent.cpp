@@ -39,7 +39,6 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	FVector TossVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation("LaunchPoint");
 	
-	UE_LOG(LogTemp, Warning, TEXT("Lauch Speed: %f "), LaunchSpeed)
 	if ( UGameplayStatics::SuggestProjectileVelocity(this, TossVelocity, StartLocation, HitLocation, LaunchSpeed, false, 0.f, 0.f, ESuggestProjVelocityTraceOption::DoNotTrace) )
 	{
 		FVector AimDirection = TossVelocity.GetSafeNormal();
