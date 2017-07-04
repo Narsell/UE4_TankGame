@@ -10,10 +10,6 @@ void ATankPlayerController::BeginPlay()
 
 	auto ControlledTank = GetControlledTank();
 	
-	if (ControlledTank)
-	UE_LOG(LogTemp, Warning, TEXT("Tank Player Controller possessing: %s"), *( ControlledTank->GetName() ) )
-	else 
-	UE_LOG(LogTemp, Error, TEXT("Tank Player Controller not possessing a Tank actor"))
 }
 
 void ATankPlayerController::Tick(float DeltaTime)

@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "TankBarrel.h"
 #include "TankAimingComponent.h"
 
 
@@ -42,14 +43,32 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	if ( UGameplayStatics::SuggestProjectileVelocity(this, TossVelocity, StartLocation, HitLocation, LaunchSpeed, false, 0.f, 0.f, ESuggestProjVelocityTraceOption::DoNotTrace) )
 	{
 		FVector AimDirection = TossVelocity.GetSafeNormal();
-		UE_LOG(LogTemp, Warning, TEXT("%s pointing at: %s"),*GetOwner()->GetName(), *AimDirection.ToString() )
+		UE_LOG(LogTemp, Warning, TEXT("%s pointing at: %s"), *GetOwner()->GetName(), *AimDirection.ToString())
+		MoveBarrel(AimDirection);
+
 	}
-	else 
+	else
+	{
 		UE_LOG(LogTemp, Warning, TEXT("%s failed to suggest projectile velocity"), *GetOwner()->GetName())
+	}
 }
 
-void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent * BarrelToSet)
+void UTankAimingComponent::MoveBarrel(FVector AimDirection)
+{
+	FRotator CurrentRotation = Barrel->GetComponentRotation();
+	FRotator RotationToSet = AimDirection.Rotation();
+	auto DeltaRotator = RotationToSet - CurrentRotation;
+
+	Barrel->Elevate(5); //TODO pass an actual value
+
+	
+
+}
+
+void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	Barrel = BarrelToSet;
 }
+
+
 
