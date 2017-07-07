@@ -1,5 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+//IWYU
+#include "Engine/World.h"
+
+//IWYU
+
+#include "Tank.h"
 #include "TankAIController.h"
 
 
@@ -32,7 +38,7 @@ ATank* ATankAIController::GetControlledAITank() const
 ATank* ATankAIController::GetPlayerTank() const
 {
 	
-	auto PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
+	auto PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn(); // hm? 
 
 	if (!PlayerPawn) { return nullptr; }
 

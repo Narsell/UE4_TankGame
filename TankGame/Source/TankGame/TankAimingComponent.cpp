@@ -1,5 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+//IWYU
+#include "Engine/World.h"
+#include "Components/StaticMeshComponent.h"
+#include "GameFramework/Actor.h"
+#include "Kismet/GameplayStatics.h"
+//IWYU
+
 #include "TankBarrel.h"
 #include "TankAimingComponent.h"
 
@@ -40,16 +47,19 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	FVector TossVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation("LaunchPoint");
 	
-	if ( UGameplayStatics::SuggestProjectileVelocity(this, TossVelocity, StartLocation, HitLocation, LaunchSpeed, false, 0.f, 0.f, ESuggestProjVelocityTraceOption::DoNotTrace) )
+	bool canItHit = UGameplayStatics::SuggestProjectileVelocity(this, TossVelocity, StartLocation, HitLocation, LaunchSpeed, false, 0.f, 0.f, ESuggestProjVelocityTraceOption::DoNotTrace);
+
+	if ( canItHit )
 	{
 		FVector AimDirection = TossVelocity.GetSafeNormal();
-		UE_LOG(LogTemp, Warning, TEXT("%s pointing at: %s"), *GetOwner()->GetName(), *AimDirection.ToString())
+
+		UE_LOG(LogTemp, Warning, TEXT("@%f: %s calculated velocity's vector required: %s"), GetWorld()->GetTimeSeconds(), *GetOwner()->GetName(), *AimDirection.ToString())
 		MoveBarrel(AimDirection);
 
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s failed to suggest projectile velocity"), *GetOwner()->GetName())
+		UE_LOG(LogTemp, Warning, TEXT("@%f: %s could not calculate velocity's vector required"), GetWorld()->GetTimeSeconds(), *GetOwner()->GetName())
 	}
 }
 

@@ -1,5 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+//IWYU
+#include "Engine/World.h"
+
+//IWYU
+
+#include "Tank.h"
 #include "TankPlayerController.h"
 
 void ATankPlayerController::BeginPlay()
@@ -44,10 +50,14 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector &HitLocation) const
 	if (GetLookDirection(ScreenLocation, WorldDirection)) 
 	{
 		if (!GetLookVectorHitLocation(WorldDirection, HitLocation))
-			UE_LOG(LogTemp, Warning, TEXT("Failed TankPlayerController.cpp line 50")) //Means no ECC_Visibility channel objects intersected.
+		{
+			UE_LOG(LogTemp, Warning, TEXT("No ECC_Visibility channel objects intersected"))
+			
+		}
+		
 	}
 
-	return true; //TODO check a better way to deal with this return.
+	return true; 
 }
 
 bool ATankPlayerController::GetLookVectorHitLocation(FVector WorldDirection, FVector &HitLocation) const
@@ -61,7 +71,8 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector WorldDirection, FVe
 		HitLocation = HitResult.Location; //Setting the OUT param
 		return true;
 	}
-	
+
+	HitLocation = FVector();
 	return false;
 		
 }
