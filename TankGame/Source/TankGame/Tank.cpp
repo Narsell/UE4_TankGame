@@ -5,7 +5,7 @@
 #include "TankBarrel.h"
 
 //IWYU
-#include "Engine\World.h"
+#include "Engine/World.h"
 
 
 
@@ -37,7 +37,7 @@ void ATank::Tick(float DeltaTime)
 
 void ATank::Fire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Firing"), GetWorld())
+	UE_LOG(LogTemp, Warning, TEXT("@%f: Firing"), GetWorld()->TimeSeconds)
 }
 
 void ATank::AimAt(FVector HitLocation)
