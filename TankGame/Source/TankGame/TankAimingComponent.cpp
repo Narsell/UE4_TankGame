@@ -1,5 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "TankAimingComponent.h"
+#include "TankBarrel.h"
+#include "TankTurret.h"
+
 //IWYU
 #include "Engine/World.h"
 #include "Components/StaticMeshComponent.h"
@@ -7,8 +11,6 @@
 #include "Kismet/GameplayStatics.h"
 //IWYU
 
-#include "TankBarrel.h"
-#include "TankAimingComponent.h"
 
 
 // Sets default values for this component's properties
@@ -16,7 +18,7 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
 }
@@ -32,17 +34,9 @@ void UTankAimingComponent::BeginPlay()
 }
 
 
-// Called every frame
-void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-
-}
-
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
-	if (!Barrel) { return; }
+	if (!Barrel || !Turret) {return; }
 
 	FVector TossVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation("LaunchPoint");
@@ -53,13 +47,13 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	{
 		FVector AimDirection = TossVelocity.GetSafeNormal();
 
-		UE_LOG(LogTemp, Warning, TEXT("@%f: %s calculated velocity's vector required: %s"), GetWorld()->GetTimeSeconds(), *GetOwner()->GetName(), *AimDirection.ToString())
+		//UE_LOG(LogTemp, Warning, TEXT("@%f: %s : Aim solution found"), GetWorld()->GetTimeSeconds(), *GetOwner()->GetName())
 		MoveBarrel(AimDirection);
 
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("@%f: %s could not calculate velocity's vector required"), GetWorld()->GetTimeSeconds(), *GetOwner()->GetName())
+		//UE_LOG(LogTemp, Warning, TEXT("@%f: %s Aim solution NOT found"), GetWorld()->GetTimeSeconds(), *GetOwner()->GetName())
 	}
 }
 
@@ -67,11 +61,11 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 {
 	FRotator CurrentRotation = Barrel->GetComponentRotation();
 	FRotator RotationToSet = AimDirection.Rotation();
-	auto DeltaRotator = RotationToSet - CurrentRotation;
+	FRotator DeltaRotator = RotationToSet - CurrentRotation;
 
-	
 
-	Barrel->Elevate(DeltaRotator.Pitch); //TODO pass an actual value
+	Barrel->Elevate(DeltaRotator.Pitch); 
+	Turret->Rotate(DeltaRotator.Yaw);
 
 	
 
@@ -79,7 +73,14 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 
 void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
+	if (!BarrelToSet) { return; }
 	Barrel = BarrelToSet;
+}
+
+void UTankAimingComponent::SetTurretReference(UTankTurret * TurretToSet)
+{
+	if (!TurretToSet) { return; }
+	Turret = TurretToSet;
 }
 
 

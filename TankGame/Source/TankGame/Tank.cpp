@@ -1,15 +1,19 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Tank.h"
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
-#include "Tank.h"
+
+//IWYU
+#include "Engine\World.h"
+
 
 
 // Sets default values
 ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	//Adding a component to the tank via code.
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>("Aiming Component");
@@ -30,6 +34,12 @@ void ATank::Tick(float DeltaTime)
 
 }
 
+
+void ATank::Fire()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Firing"), GetWorld())
+}
+
 void ATank::AimAt(FVector HitLocation)
 {
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
@@ -48,5 +58,10 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void ATank::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
+}
+
+void ATank::SetTurretReference(UTankTurret * TurretToSet)
+{
+	TankAimingComponent->SetTurretReference(TurretToSet);
 }
 
