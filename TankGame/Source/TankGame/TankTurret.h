@@ -20,7 +20,7 @@ class TANKGAME_API UTankTurret : public UStaticMeshComponent
 
 	private:
 
-		UPROPERTY(EditAnywhere, Category = SetUp)
+		UPROPERTY(EditDefaultsOnly, Category = SetUp)
 		float MaxDegreesPerSecond = 20.f;
 
 
