@@ -3,11 +3,12 @@
 #include "Tank.h"
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
-#include "Projectile.h"
+#include "Projectile.h" 
 
 
 //IWYU
 #include "Engine/World.h"
+
 
 
 
@@ -17,7 +18,7 @@ ATank::ATank()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
-	//Adding a component to the tank via code.
+	//Adding fixed components to the tank via code.
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>("Aiming Component");
 
 }
@@ -39,11 +40,11 @@ void ATank::Tick(float DeltaTime)
 
 void ATank::Fire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("@%f: Firing"), GetWorld()->TimeSeconds)
 
-		if (!Barrel) { return; }
+	if (!Barrel) { return; }
 
-	GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation("LaunchPoint"), Barrel->GetSocketRotation("LaunchPoint"));
+	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation("LaunchPoint"), Barrel->GetSocketRotation("LaunchPoint"));
+	Projectile->LaunchProjectile(LaunchSpeed);
 }
 
 void ATank::AimAt(FVector HitLocation)
