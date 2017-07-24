@@ -3,6 +3,8 @@
 #include "Tank.h"
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
+#include "Projectile.h"
+
 
 //IWYU
 #include "Engine/World.h"
@@ -38,6 +40,10 @@ void ATank::Tick(float DeltaTime)
 void ATank::Fire()
 {
 	UE_LOG(LogTemp, Warning, TEXT("@%f: Firing"), GetWorld()->TimeSeconds)
+
+		if (!Barrel) { return; }
+
+	GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation("LaunchPoint"), Barrel->GetSocketRotation("LaunchPoint"));
 }
 
 void ATank::AimAt(FVector HitLocation)
@@ -58,6 +64,7 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void ATank::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
+	Barrel = BarrelToSet; //For firing;
 }
 
 void ATank::SetTurretReference(UTankTurret * TurretToSet)
