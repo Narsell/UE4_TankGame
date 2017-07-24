@@ -40,11 +40,22 @@ void ATank::Tick(float DeltaTime)
 
 void ATank::Fire()
 {
+	
+	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeSeconds;
+	static bool isBeginPlay = true;
 
-	if (!Barrel) { return; }
+	if ( Barrel && (isReloaded || isBeginPlay)  ) 
+	{
+		
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation("LaunchPoint"), Barrel->GetSocketRotation("LaunchPoint"));
+		Projectile->LaunchProjectile(LaunchSpeed);
 
-	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation("LaunchPoint"), Barrel->GetSocketRotation("LaunchPoint"));
-	Projectile->LaunchProjectile(LaunchSpeed);
+		LastFireTime = FPlatformTime::Seconds();
+		isBeginPlay = false;
+	
+	}
+
+
 }
 
 void ATank::AimAt(FVector HitLocation)

@@ -22,28 +22,22 @@ void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (!GetPlayerTank() ) 	{ return; }
 
-	FVector HitLocation = GetPlayerTank()->GetActorLocation();
-	GetControlledAITank()->AimAt(HitLocation);
+	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn(); // hm? 
+	auto AITank = Cast<ATank>(GetPawn());
 
-}
+	if (PlayerTank) 
+	{
+
+		//TODO Move towards the player
+
+		//Aim towards the player
+		AITank->AimAt(PlayerTank->GetActorLocation());
 
 
-ATank* ATankAIController::GetControlledAITank() const
-{
-	
-	return Cast<ATank>(GetPawn());
-}
+		AITank->Fire(); //TODO Limit fire rate
+	}
 
-ATank* ATankAIController::GetPlayerTank() const
-{
-	
-	auto PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn(); // hm? 
 
-	if (!PlayerPawn) { return nullptr; }
-
-	else
-		return Cast<ATank>(PlayerPawn);
 }
 

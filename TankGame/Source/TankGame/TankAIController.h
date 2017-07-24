@@ -23,10 +23,6 @@ public:
 	void Tick(float DeltaTime) override;
 	void BeginPlay() override;
 
-private:
-
-	ATank* GetControlledAITank() const;
-	ATank* GetPlayerTank() const;
 
 
 	
