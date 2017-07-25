@@ -19,7 +19,6 @@ ATank::ATank()
 
 	//Adding fixed components to the tank via code.
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>("Aiming Component");
-	TankMovementComponent = CreateDefaultSubobject<UTankMovementComponent>("Movement Component");
 
 }
 
