@@ -3,13 +3,12 @@
 #include "Tank.h"
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
-#include "Projectile.h" 
+#include "Projectile.h"
+#include "TankMovementComponent.h"
 
 
 //IWYU
 #include "Engine/World.h"
-
-
 
 
 // Sets default values
@@ -20,6 +19,7 @@ ATank::ATank()
 
 	//Adding fixed components to the tank via code.
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>("Aiming Component");
+	TankMovementComponent = CreateDefaultSubobject<UTankMovementComponent>("Movement Component");
 
 }
 
