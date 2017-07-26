@@ -17,7 +17,7 @@ ATank::ATank()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
-	//Adding fixed components to the tank via code.
+	//Adding fixed component to the tank via code.
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>("Aiming Component");
 
 }

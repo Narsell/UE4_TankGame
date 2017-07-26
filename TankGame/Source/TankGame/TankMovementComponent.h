@@ -9,7 +9,7 @@
 class UTankTrack;
 
 /**
- * Responsible from driving the tank tracks
+ * Responsible for driving the tank tracks
  */
 UCLASS(Classgroup = (Custom), meta = (BlueprintSpawnableComponent))
 class TANKGAME_API UTankMovementComponent : public UNavMovementComponent
@@ -24,6 +24,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Input)
 	void IntendMoveFoward(float Throw);
+
+	UFUNCTION(BlueprintCallable, Category = Input)
+	void IntendTurnRight(float Throw);
 
 private:
 
