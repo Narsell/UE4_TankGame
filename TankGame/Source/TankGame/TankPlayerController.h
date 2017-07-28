@@ -20,12 +20,19 @@ public:
 	void BeginPlay() override;
 	void Tick(float DeltaTime) override;
 
+protected:
+
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	ATank* GetControlledTank() const;
+
 private:
 
-	ATank* GetControlledTank() const;
 	void AimTowardsCrosshair();
+
 	bool GetSightRayHitLocation(FVector &HitLocation) const; //Gets world location of the point where the line trace hits the world, returns true if hits, false otherwise.
+
 	bool GetLookDirection(FVector2D ScreenLocation, FVector &WorldDirection) const;
+
 	bool GetLookVectorHitLocation(FVector WorldDirection, FVector &HitLocation) const;
 
 	UPROPERTY(EditDefaultsOnly)
