@@ -34,7 +34,7 @@ void UTankAimingComponent::BeginPlay()
 }
 
 
-void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
+void UTankAimingComponent::AimAt(FVector HitLocation)
 {
 	if (!ensure(Barrel && Turret)) { return; }
 	
@@ -72,10 +72,10 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 
 		Barrel->Elevate(DeltaRotator.Pitch);
 		Turret->Rotate(DeltaRotator.Yaw);
-
-	
-
 }
+
+
+
 
 
 
