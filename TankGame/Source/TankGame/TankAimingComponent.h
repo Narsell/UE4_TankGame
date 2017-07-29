@@ -48,8 +48,12 @@ public:
 	void AimAt(FVector HitLocation);
 
 private:
-	
+
+	void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 	void MoveBarrel(FVector AimDirection);
+	bool IsBarrelMoving();
+
+	FVector AimDirection;
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
 

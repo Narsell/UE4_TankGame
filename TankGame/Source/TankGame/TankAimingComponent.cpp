@@ -19,7 +19,7 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
 }
@@ -29,26 +29,43 @@ UTankAimingComponent::UTankAimingComponent()
 void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
+  //  FiringState = EFiringStatus::Aiming;
 	
 }
+
+void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
+{
+	if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTimeSeconds)
+
+		FiringState = EFiringStatus::Reloading;
+	else if ( IsBarrelMoving() )
+		FiringState = EFiringStatus::Aiming;
+
+	else
+		FiringState = EFiringStatus::Locked;
+}
+
+bool UTankAimingComponent::IsBarrelMoving()
+{
+
+
+	FVector BarrelFowardVector = Barrel->GetForwardVector();
+	return !BarrelFowardVector.Equals(AimDirection, 0.01f);
+}
+
 
 void UTankAimingComponent::Fire()
 {
 	if (!ensure(Barrel || ProjectileBlueprint )) { return; }
 
-	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeSeconds;
-	static bool isBeginPlay = true;
 
-	if (isReloaded || isBeginPlay)
+	if (FiringState != EFiringStatus::Reloading)
 	{
 
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation("LaunchPoint"), Barrel->GetSocketRotation("LaunchPoint"));
 		Projectile->LaunchProjectile(LaunchSpeed);
 
 		LastFireTime = FPlatformTime::Seconds();
-		isBeginPlay = false;
 
 	}
 
@@ -67,7 +84,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 
 		if (canItHit)
 		{
-			FVector AimDirection = TossVelocity.GetSafeNormal();
+			AimDirection = TossVelocity.GetSafeNormal();
 			MoveBarrel(AimDirection);
 		}
 		
