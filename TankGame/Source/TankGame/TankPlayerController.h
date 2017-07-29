@@ -23,8 +23,7 @@ public:
 protected:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
-	void FoundAimingComponent(UTankAimingComponent* AimCompRef);
-
+	void FoundAimingComponent(UTankAimingComponent* AimCompRef); //Does not need to be defined due to unreal's magic in BP
 
 private:
 
