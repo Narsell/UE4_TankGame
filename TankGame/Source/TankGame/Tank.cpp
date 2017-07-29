@@ -16,9 +16,7 @@ ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-
-	//Adding fixed component to the tank via code.
-	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>("Aiming Component");
+	UE_LOG(LogTemp, Warning, TEXT("NORMIE: %s Tank c++ constructed"), *GetName())
 
 }
 
@@ -26,6 +24,7 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
+	UE_LOG(LogTemp, Warning, TEXT("NORMIE: %s Tank c++ Begin Play"), *GetName())
 
 }
 
@@ -39,11 +38,12 @@ void ATank::Tick(float DeltaTime)
 
 void ATank::Fire()
 {
+	if (!ensure(Barrel) ) { return; }
 	
 	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeSeconds;
 	static bool isBeginPlay = true;
 
-	if ( Barrel && (isReloaded || isBeginPlay)  ) 
+	if (isReloaded || isBeginPlay) 
 	{
 		
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation("LaunchPoint"), Barrel->GetSocketRotation("LaunchPoint"));
@@ -59,27 +59,10 @@ void ATank::Fire()
 
 void ATank::AimAt(FVector HitLocation)
 {
+	if ( !ensure(TankAimingComponent) ) { return; }
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 	
 }
 
 
-
-// Called to bind functionality to input
-void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
-
-void ATank::SetBarrelReference(UTankBarrel * BarrelToSet)
-{
-	TankAimingComponent->SetBarrelReference(BarrelToSet);
-	Barrel = BarrelToSet; //For firing;
-}
-
-void ATank::SetTurretReference(UTankTurret * TurretToSet)
-{
-	TankAimingComponent->SetTurretReference(TurretToSet);
-}
 

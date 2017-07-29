@@ -36,50 +36,45 @@ void UTankAimingComponent::BeginPlay()
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
-	if (!Barrel || !Turret) {return; }
-
-	FVector TossVelocity;
-	FVector StartLocation = Barrel->GetSocketLocation("LaunchPoint");
+	if (!ensure(Barrel && Turret)) { return; }
 	
-	bool canItHit = UGameplayStatics::SuggestProjectileVelocity(this, TossVelocity, StartLocation, HitLocation, LaunchSpeed, false, 0.f, 0.f, ESuggestProjVelocityTraceOption::DoNotTrace);
 
-	if ( canItHit )
-	{
-		FVector AimDirection = TossVelocity.GetSafeNormal();
+		FVector TossVelocity;
+		FVector StartLocation = Barrel->GetSocketLocation("LaunchPoint");
 
-		//UE_LOG(LogTemp, Warning, TEXT("@%f: %s : Aim solution found"), GetWorld()->GetTimeSeconds(), *GetOwner()->GetName())
-		MoveBarrel(AimDirection);
+		bool canItHit = UGameplayStatics::SuggestProjectileVelocity(this, TossVelocity, StartLocation, HitLocation, LaunchSpeed, false, 0.f, 0.f, ESuggestProjVelocityTraceOption::DoNotTrace);
 
-	}
-	else
-	{
-		//UE_LOG(LogTemp, Warning, TEXT("@%f: %s Aim solution NOT found"), GetWorld()->GetTimeSeconds(), *GetOwner()->GetName())
-	}
+		if (canItHit)
+		{
+			FVector AimDirection = TossVelocity.GetSafeNormal();
+			MoveBarrel(AimDirection);
+		}
+		
+	
+
+}
+
+void UTankAimingComponent::Initialize(UTankBarrel * BarrelToSet, UTankTurret * TurretToSet)
+{
+	Barrel = BarrelToSet;
+	Turret = TurretToSet;
 }
 
 void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 {
+	if (!ensure(Barrel && Turret)) { return; }
+	
 
-	FRotator CurrentRotation = Barrel->GetComponentRotation();
-	FRotator RotationToSet = AimDirection.Rotation();
-	FRotator DeltaRotator = RotationToSet - CurrentRotation;
+		FRotator CurrentRotation = Barrel->GetComponentRotation();
+		FRotator RotationToSet = AimDirection.Rotation();
+		FRotator DeltaRotator = RotationToSet - CurrentRotation;
 
 
-	Barrel->Elevate(DeltaRotator.Pitch); 
-	Turret->Rotate(DeltaRotator.Yaw);
+		Barrel->Elevate(DeltaRotator.Pitch);
+		Turret->Rotate(DeltaRotator.Yaw);
 
 	
 
-}
-
-void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
-{
-	Barrel = BarrelToSet;
-}
-
-void UTankAimingComponent::SetTurretReference(UTankTurret * TurretToSet)
-{
-	Turret = TurretToSet;
 }
 
 
