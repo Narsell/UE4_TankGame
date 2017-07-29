@@ -57,7 +57,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector &HitLocation) const
 	{
 		if (!GetLookVectorHitLocation(WorldDirection, HitLocation))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("No ECC_Visibility channel objects intersected"))
+			//UE_LOG(LogTemp, Warning, TEXT("No ECC_Visibility channel objects intersected"))
 			
 		}
 		
@@ -93,7 +93,6 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector &
 
 ATank* ATankPlayerController::GetControlledTank() const
 {
-
 	return Cast<ATank>(GetPawn());
 }
 

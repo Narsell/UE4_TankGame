@@ -4,7 +4,6 @@
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
 #include "Projectile.h"
-#include "TankMovementComponent.h"
 
 
 //IWYU
@@ -16,7 +15,7 @@ ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-	UE_LOG(LogTemp, Warning, TEXT("NORMIE: %s Tank c++ constructed"), *GetName())
+
 
 }
 
@@ -24,7 +23,8 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("NORMIE: %s Tank c++ Begin Play"), *GetName())
+
+	TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 
 }
 
