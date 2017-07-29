@@ -23,30 +23,13 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
 
-	UFUNCTION(BlueprintCallable, Category = "Firing")
-	void Fire();
 
-private:
 
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	float LaunchSpeed = 5000.f; //Real values go from 40,000 cm/s to 100,000 cm/s, But that's not fun
-
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	float ReloadTimeSeconds = 3.f;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	TSubclassOf<AProjectile> ProjectileBlueprint; //Telling the editor to list only childs of the class AProjectile.
-
-	UTankBarrel* Barrel = nullptr; //TODO Remove
-	double LastFireTime = 0;
 	
 	
 };

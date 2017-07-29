@@ -3,6 +3,7 @@
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
+#include "Projectile.h"
 
 //IWYU
 #include "Engine/World.h"
@@ -33,6 +34,26 @@ void UTankAimingComponent::BeginPlay()
 	
 }
 
+void UTankAimingComponent::Fire()
+{
+	if (!ensure(Barrel)) { return; }
+
+	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeSeconds;
+	static bool isBeginPlay = true;
+
+	if (isReloaded || isBeginPlay)
+	{
+
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation("LaunchPoint"), Barrel->GetSocketRotation("LaunchPoint"));
+		Projectile->LaunchProjectile(LaunchSpeed);
+
+		LastFireTime = FPlatformTime::Seconds();
+		isBeginPlay = false;
+
+	}
+
+
+}
 
 void UTankAimingComponent::AimAt(FVector HitLocation)
 {

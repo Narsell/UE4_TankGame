@@ -20,6 +20,7 @@ enum class EFiringStatus : uint8
 
 class UTankTurret;
 class UTankBarrel;
+class AProjectile;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class TANKGAME_API UTankAimingComponent : public UActorComponent
@@ -41,6 +42,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void Fire();
+
 	void AimAt(FVector HitLocation);
 
 private:
@@ -51,6 +55,14 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float LaunchSpeed = 5000.f; //Real values go from 40,000 cm/s to 100,000 cm/s, But that's not fun
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	float ReloadTimeSeconds = 3.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	TSubclassOf<AProjectile> ProjectileBlueprint; //Telling the editor to list only childs of the class AProjectile.
+
+	double LastFireTime = 0;
 
 
 	
