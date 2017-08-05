@@ -29,12 +29,14 @@ UTankAimingComponent::UTankAimingComponent()
 void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
-  //  FiringState = EFiringStatus::Aiming;
+
 	
 }
 
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
 {
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
 	if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTimeSeconds)
 
 		FiringState = EFiringStatus::Reloading;
