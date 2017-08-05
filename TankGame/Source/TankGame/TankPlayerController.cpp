@@ -57,15 +57,10 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector &HitLocation) const
 	FVector WorldDirection; //OUT param
 	if (GetLookDirection(ScreenLocation, WorldDirection)) 
 	{
-		if (!GetLookVectorHitLocation(WorldDirection, HitLocation))
-		{
-			//UE_LOG(LogTemp, Warning, TEXT("No ECC_Visibility channel objects intersected"))
-			
-		}
-		
+		return GetLookVectorHitLocation(WorldDirection, HitLocation);
 	}
-
-	return true; 
+		
+	return false; 
 }
 
 bool ATankPlayerController::GetLookVectorHitLocation(FVector WorldDirection, FVector &HitLocation) const

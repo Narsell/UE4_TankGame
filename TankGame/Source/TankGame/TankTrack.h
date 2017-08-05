@@ -19,10 +19,6 @@ public:
 	UTankTrack();
 	virtual void BeginPlay() override;
 
-protected:
-
-	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
-
 public:
 
 	// Sets a throttle between -1 and +1
@@ -35,6 +31,13 @@ public:
 	// Max force per track, in Newtons
 	UPROPERTY(EditDefaultsOnly)
 		float TrackMaxDrivingForce = 400000; // Assume 40 tonne tank, and 1g accelleration
+
+private: 
+
+	float CurrentThrottle = 0.f;
+
+	void ApplySidewaysForce();
+	void DriveTrack();
 
 	
 
