@@ -12,7 +12,8 @@ enum class EFiringStatus : uint8
 {
 	Reloading, 
 	Aiming, 
-	Locked
+	Locked,
+	OutOfAmmo
 
 
 };
@@ -46,6 +47,8 @@ public:
 	void Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void Fire();
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	int32 GetAmmo() const;
 
 	EFiringStatus GetFiringState() const;
 	void AimAt(FVector HitLocation);
@@ -68,7 +71,12 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	TSubclassOf<AProjectile> ProjectileBlueprint; //Telling the editor to list only childs of the class AProjectile.
 
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	int32 Ammo = 3;
+
 	double LastFireTime = 0;
+
+
 
 
 	
