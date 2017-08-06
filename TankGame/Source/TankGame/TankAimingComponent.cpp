@@ -63,7 +63,7 @@ void UTankAimingComponent::Fire()
 	if (!ensure(Barrel || ProjectileBlueprint )) { return; }
 
 
-	if (FiringState != EFiringStatus::Reloading && FiringState != EFiringStatus::OutOfAmmo)
+	if (FiringState == EFiringStatus::Aiming || FiringState == EFiringStatus::Locked)
 	{
 
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation("LaunchPoint"), Barrel->GetSocketRotation("LaunchPoint"));
