@@ -9,6 +9,9 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "PhysicsEngine/RadialForceComponent.h"
+#include "Engine/World.h"
+#include "Runtime/Engine/Public/TimerManager.h"
+
 
 // Sets default values
 AProjectile::AProjectile()
@@ -56,6 +59,20 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	ImpactBlast->Activate();
 	ExplosionForce->FireImpulse();
 
+	SetRootComponent(ImpactBlast);
+	CollisionMesh->DestroyComponent();
+
+	FTimerHandle TimerHandle;
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AProjectile::OnTimerExpire, DestroyDelay);
+
+	 
+   
+}
+
+void AProjectile::OnTimerExpire()
+{
+	Destroy();
 }
 
 
