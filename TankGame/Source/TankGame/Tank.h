@@ -18,9 +18,19 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser) override;
+
 protected:
 	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	virtual void BeginPlay() override; 
+
+private:
+
+	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
+	int32 StartingHealth = 100.f;
+
+	UPROPERTY(VisibleAnywhere, Category = "Attributes")
+	int32 CurrentHealth = StartingHealth;
 
 
 
