@@ -2,10 +2,12 @@
 
 #pragma once
 
-
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "TankAIController.generated.h"
+
+
+
 
 
 /**
@@ -20,6 +22,10 @@ public:
 
 	void Tick(float DeltaTime) override;
 	void BeginPlay() override;
+	virtual void SetPawn(APawn* InPawn) override;
+
+	UFUNCTION()
+	void OnTankDeath();
 
 protected:
 
