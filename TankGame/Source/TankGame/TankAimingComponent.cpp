@@ -60,7 +60,7 @@ bool UTankAimingComponent::IsBarrelMoving()
 
 void UTankAimingComponent::Fire()
 {
-	if (!ensure(Barrel || ProjectileBlueprint )) { return; }
+	if (!ensure(Barrel && ProjectileBlueprint )) { return; }
 
 
 	if (FiringState == EFiringStatus::Aiming || FiringState == EFiringStatus::Locked)
@@ -115,7 +115,7 @@ void UTankAimingComponent::Initialize(UTankBarrel * BarrelToSet, UTankTurret * T
 
 void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 {
-	if (!ensure(Barrel || Turret)) { return; }
+	if (!ensure(Barrel && Turret)) { return; }
 	
 
 		FRotator CurrentRotation = Barrel->GetComponentRotation();
